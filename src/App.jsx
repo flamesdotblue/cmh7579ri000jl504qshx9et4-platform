@@ -3,6 +3,10 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import Categories from './components/Categories';
 import ProductShowcase from './components/ProductShowcase';
+import ProductGrid from './components/ProductGrid';
+import AboutSection from './components/AboutSection';
+import ContactSection from './components/ContactSection';
+import Footer from './components/Footer';
 
 const initialProducts = [
   {
@@ -119,50 +123,43 @@ export default function App() {
     return matchQuery && matchCategory;
   });
 
+  const newArrivals = filtered.filter((p) => p.isNewArrival);
+  const bestDeals = filtered.filter((p) => p.isBestDeal);
+
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
       <Header cartCount={cart.length} onSearch={setQuery} />
+
       <main className="flex flex-col gap-12">
         <Hero />
-        <section className="px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto -mt-16">
+
+        {/* Categories + Home highlight (still visible) */}
+        <section className="px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto -mt-16" id="home">
           <div className="rounded-2xl border border-neutral-800/60 bg-neutral-900/60 backdrop-blur p-4 sm:p-6">
             <Categories active={activeCategory} onSelect={setActiveCategory} />
-            <ProductShowcase
-              products={filtered}
-              onAddToCart={onAddToCart}
-            />
+            <ProductShowcase products={filtered} onAddToCart={onAddToCart} />
           </div>
+        </section>
+
+        {/* Dedicated anchors so header links work */}
+        <section id="new" className="px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+          <ProductGrid title="New Arrivals" products={newArrivals} onAddToCart={onAddToCart} />
+        </section>
+
+        <section id="deals" className="px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+          <ProductGrid title="Best Deals" products={bestDeals} onAddToCart={onAddToCart} />
+        </section>
+
+        <section id="about" className="px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+          <AboutSection />
+        </section>
+
+        <section id="contact" className="px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+          <ContactSection />
         </section>
       </main>
 
-      <section className="mt-14 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="rounded-xl border border-neutral-800 p-6 bg-neutral-900/60">
-            <h3 className="text-xl font-semibold">About Us</h3>
-            <p className="mt-2 text-neutral-300 text-sm leading-relaxed">
-              A to Z Collection brings a curated selection of premium fashion, electronics, home lifestyle and accessories. Our mission is to deliver quality, style, and value under one roof.
-            </p>
-          </div>
-          <div className="rounded-xl border border-neutral-800 p-6 bg-neutral-900/60">
-            <h3 className="text-xl font-semibold">Returns Policy</h3>
-            <p className="mt-2 text-neutral-300 text-sm leading-relaxed">
-              7-day easy returns for eligible products. Items must be unused, with tags and original packaging. Refunds are processed to your original payment method.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <footer className="mt-10 border-t border-neutral-800/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-neutral-400">© {new Date().getFullYear()} A to Z Collection. All rights reserved.</p>
-          <div className="flex items-center gap-6 text-sm text-neutral-300">
-            <a href="#contact" className="hover:text-amber-400 transition">Contact Us</a>
-            <a href="#orders" className="hover:text-amber-400 transition">Orders</a>
-            <a href="#privacy" className="hover:text-amber-400 transition">Privacy</a>
-          </div>
-          <div className="text-sm text-neutral-300">Cart Total: ₹{(total / 100).toFixed(2)}</div>
-        </div>
-      </footer>
+      <Footer total={total} />
 
       {toast && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">

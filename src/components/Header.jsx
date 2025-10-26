@@ -41,14 +41,15 @@ function LogoVariantB({ className = '' }) {
 export default function Header({ cartCount = 0, onSearch }) {
   const [openSearch, setOpenSearch] = useState(false);
 
-  // Choose the better logo visually: Variant B feels more premium and modern.
   const Logo = LogoVariantB;
 
   return (
     <header className="sticky top-0 z-40 backdrop-blur bg-neutral-950/70 border-b border-neutral-800/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 h-16 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <Logo />
+          <a href="#home" aria-label="A to Z Collection Home">
+            <Logo />
+          </a>
           <nav className="hidden md:flex items-center gap-6 text-sm text-neutral-300">
             <a href="#home" className="hover:text-amber-400 transition">Home</a>
             <a href="#new" className="hover:text-amber-400 transition">New Arrivals</a>
